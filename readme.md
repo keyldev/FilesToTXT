@@ -1,0 +1,1 @@
+A program that allows you to get a list of all folders and files, as well as calculate their MD5 hash. Saves the result to a text document.
