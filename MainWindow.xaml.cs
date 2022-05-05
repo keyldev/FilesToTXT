@@ -34,6 +34,7 @@ namespace FilesToTXT
         }
         private bool SaveResultToTXT(List<string> list)
         {
+            if (list.Count == 0) return false;
             using (StreamWriter sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "/files.txt"))
             {
                 foreach (string path in list)
@@ -41,8 +42,6 @@ namespace FilesToTXT
                 sw.Close();
                 return true;
             }
-
-            return false;
         }
         private async Task<List<string>> GetRecursFiles(string start_path)
         {
