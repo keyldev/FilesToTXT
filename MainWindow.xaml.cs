@@ -56,7 +56,7 @@ namespace FilesToTXT
                 string[] files = Directory.GetFiles(start_path);
                 foreach (string filename in files)
                 {
-                    ls.Add(filename + $" [MD5: {CalculateMD5(filename)}]");
+                    ls.Add("{\"" + filename + $"\",\"{CalculateMD5(filename)}\"}}");
                 }
             }
             catch (System.Exception e)
