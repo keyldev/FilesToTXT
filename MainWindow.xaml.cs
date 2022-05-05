@@ -29,6 +29,20 @@ namespace FilesToTXT
             {
                 ResultTextBox.Text += fname + "\n";
             }
+            if (SaveResultToTXT(ls)) System.Windows.MessageBox.Show("The file is recorded.");
+            else System.Windows.MessageBox.Show("File recording error. ");
+        }
+        private bool SaveResultToTXT(List<string> list)
+        {
+            using (StreamWriter sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "/files.txt"))
+            {
+                foreach (string path in list)
+                    sw.WriteLine(path);
+                sw.Close();
+                return true;
+            }
+
+            return false;
         }
         private async Task<List<string>> GetRecursFiles(string start_path)
         {
@@ -44,7 +58,7 @@ namespace FilesToTXT
                 string[] files = Directory.GetFiles(start_path);
                 foreach (string filename in files)
                 {
-                    ls.Add(filename + $"[MD5: {CalculateMD5(filename)}]");
+                    ls.Add(filename + $" [MD5: {CalculateMD5(filename)}]");
                 }
             }
             catch (System.Exception e)
