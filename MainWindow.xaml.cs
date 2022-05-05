@@ -51,7 +51,6 @@ namespace FilesToTXT
                 string[] folders = Directory.GetDirectories(start_path);
                 foreach (string folder in folders)
                 {
-                    ls.Add(folder);
                     ls.AddRange(GetRecursFiles(folder).Result);
                 }
                 string[] files = Directory.GetFiles(start_path);
