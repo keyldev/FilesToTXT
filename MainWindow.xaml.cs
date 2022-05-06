@@ -27,7 +27,7 @@ namespace FilesToTXT
             List<string> ls = await GetRecursFiles(folder.SelectedPath);
             foreach (string fname in ls)
             {
-                ResultTextBox.Text += fname + "\n";
+                ResultTextBox.Text += fname.Replace(folder.SelectedPath, "") + "\n";
             }
             if (SaveResultToTXT(ls)) System.Windows.MessageBox.Show("The file is recorded.");
             else System.Windows.MessageBox.Show("File recording error. ");
@@ -35,10 +35,14 @@ namespace FilesToTXT
         private bool SaveResultToTXT(List<string> list)
         {
             if (list.Count == 0) return false;
-            using (StreamWriter sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "/files.txt"))
+            using (StreamWriter sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "/files.maze")) // change extension to yours
             {
                 foreach (string path in list)
-                    sw.WriteLine(path);
+                {
+                    string only_path = path.Replace(PathTextBox.Text, "");
+                    sw.WriteLine(only_path);
+                }
+
                 sw.Close();
                 return true;
             }
@@ -56,7 +60,9 @@ namespace FilesToTXT
                 string[] files = Directory.GetFiles(start_path);
                 foreach (string filename in files)
                 {
-                    ls.Add("{\"" + filename + $"\",\"{CalculateMD5(filename)}\"}}");
+                    ls.Add(filename + $", {CalculateMD5(filename)}"); // change formatting to your
+
+                    //ls.Add("{@\"" + filename + $"\",\"{CalculateMD5(filename)}\"}},");
                 }
             }
             catch (System.Exception e)
