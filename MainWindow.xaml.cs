@@ -60,7 +60,7 @@ namespace FilesToTXT
                 string[] files = Directory.GetFiles(start_path);
                 foreach (string filename in files)
                 {
-                    ls.Add(filename + $", {CalculateMD5(filename)}"); // change formatting to your
+                    ls.Add($"{{{filename}, {CalculateMD5(filename)}}}"); // change formatting to your
 
                     //ls.Add("{@\"" + filename + $"\",\"{CalculateMD5(filename)}\"}},");
                 }
