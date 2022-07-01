@@ -60,7 +60,10 @@ namespace FilesToTXT
                 string[] files = Directory.GetFiles(start_path);
                 foreach (string filename in files)
                 {
-                    ls.Add($"{{{filename}, {CalculateMD5(filename)}}}"); // change formatting to your
+                    //string hash = await CalculateMD5Async(filename);
+                    //770e5c062a2e3147fb73f522e4f7cd2e
+                    //770e5c062a2e3147fb73f522e4f7cd2e
+                    ls.Add($"{{{filename},{CalculateMD5(filename)}}}"); // change formatting to your
 
                     //ls.Add("{@\"" + filename + $"\",\"{CalculateMD5(filename)}\"}},");
                 }
@@ -70,6 +73,28 @@ namespace FilesToTXT
                 System.Windows.MessageBox.Show(e.Message);
             }
             return ls;
+        }
+        async Task<string> CalculateMD5Async(string filename)
+        {
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true)) // true means use IO async operations
+                {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    do
+                    {
+                        bytesRead = await stream.ReadAsync(buffer, 0, 4096);
+                        if (bytesRead > 0)
+                        {
+                            md5.TransformBlock(buffer, 0, bytesRead, null, 0);
+                        }
+                    } while (bytesRead > 0);
+
+                    md5.TransformFinalBlock(buffer, 0, 0);
+                    return BitConverter.ToString(md5.Hash).Replace("-", "").ToLowerInvariant();
+                }
+            }
         }
         string CalculateMD5(string filename)
         {
